@@ -1,141 +1,633 @@
-
-# 📡 Medos Imitasi API – Dokumentasi Endpoint
+# 📡 Medos Imitasi API – Dokumentasi Lengkap dengan Contoh
 
 **Base URL:** `http://127.0.0.1:8000/api/v1`
 
 Seluruh endpoint membutuhkan autentikasi JWT **kecuali** `login` dan `register`.
-
 ---
 
-## 🔐 Authentication
+## 📁 Posts
 
-### ▶️ Login  
-**POST** `/login`
+### 🔹 get all post
+**GET** `http://127.0.0.1:8000/api/v1/posts/`
 
-**Request**
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
 ```json
 {
-  "email": "evosabdul@gmail.com",
-  "password": "123123"
+  "content": "Ini adalah contoh post.",
+  "image_url": "https://example.com/image.jpg"
 }
 ```
 
-**Response**
-```json
-{
-  "access_token": "JWT_TOKEN",
-  "token_type": "bearer",
-  "expires_in": 3600
-}
-```
-
----
-
-### 🆕 Register  
-**POST** `/register`
-
-**Request**
-```json
-{
-  "fullname": "naufal ananta",
-  "email": "evosabdul@gmail.com",
-  "password": "123123"
-}
-```
-
-**Response**
+**Contoh Response Body:**
 ```json
 {
   "success": true,
-  "message": "User registered successfully"
-}
-```
-
----
-
-## 📄 Posts
-
-### 📥 Get All Posts  
-**GET** `/posts`  
-🔒 Requires Auth
-
-**Response**
-```json
-[
-  {
+  "message": "Berhasil diproses",
+  "data": {
     "id": 1,
-    "content": "Hello world",
-    "image_url": null,
+    "content": "Ini adalah contoh konten",
     "created_at": "2025-07-05T12:00:00.000000Z",
-    "updated_at": "2025-07-05T12:00:00.000000Z",
-    "user": {
-      "id": 10,
-      "fullname": "Naufal"
-    },
-    "comments": [
-      {
-        "id": 5,
-        "content": "Mantap!",
-        "created_at": "2025-07-05T12:05:00.000000Z",
-        "user": {
-          "id": 12,
-          "fullname": "paimon"
-        }
-      }
-    ],
-    "likes_count": 5
+    "updated_at": "2025-07-05T12:05:00.000000Z"
   }
-]
-```
-
----
-
-### 📥 Get Post by ID  
-**GET** `/posts/{id}`  
-🔒 Requires Auth
-
----
-
-### ➕ Create Post  
-**POST** `/posts`  
-🔒 Requires Auth
-
-**Request**
-```json
-{
-  "content": "Contoh post",
-  "image_url": "https://example.com"
 }
 ```
 
----
+### 🔹 get by id
+**GET** `http://127.0.0.1:8000/api/v1/posts/1`
 
-### ✏️ Update Post  
-**PUT** `/posts/{id}`  
-🔒 Requires Auth
-
-**Request**
-```json
-{
-  "content": "Edit konten",
-  "image_url": "https://example.com/updated"
-}
-```
-
----
-
-### ❌ Delete Post  
-**DELETE** `/posts/{id}`  
-🔒 Requires Auth
-
----
-
-## 🛡️ Authorization Header
-
-Untuk semua endpoint yang dilindungi, tambahkan header berikut:
-
-```
+**Headers:**
+```http
 Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
 ```
 
----
+**Contoh Request Body:**
+```json
+{
+  "content": "Ini adalah contoh post.",
+  "image_url": "https://example.com/image.jpg"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 post
+**POST** `http://127.0.0.1:8000/api/v1/posts`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Ini adalah contoh post.",
+  "image_url": "https://example.com/image.jpg"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 edit post
+**PUT** `http://127.0.0.1:8000/api/v1/posts/3`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Ini adalah contoh post.",
+  "image_url": "https://example.com/image.jpg"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 delete post
+**DELETE** `http://127.0.0.1:8000/api/v1/posts/11`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Ini adalah contoh post.",
+  "image_url": "https://example.com/image.jpg"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 New Request
+**GET** ``
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Ini adalah contoh post.",
+  "image_url": "https://example.com/image.jpg"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 New Request
+**POST** `http://127.0.0.1:8000/api/v1/posts`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Ini adalah contoh post.",
+  "image_url": "https://example.com/image.jpg"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+## 📁 comments
+
+### 🔹 get comment by post id
+**GET** `http://127.0.0.1:8000/api/v1/comments/posts/1`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Komentar yang bagus!"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 post comment by post_id
+**POST** `http://127.0.0.1:8000/api/v1/comments/posts/1`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Komentar yang bagus!"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 delete comment
+**DELETE** `http://127.0.0.1:8000/api/v1/comments/21`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Komentar yang bagus!"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 edit comment
+**PUT** `http://127.0.0.1:8000/api/v1/comments/32`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Komentar yang bagus!"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+## 📁 likes
+
+### 🔹 get likes
+**GET** `http://127.0.0.1:8000/api/v1/posts/1/likes`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Ini adalah contoh post.",
+  "image_url": "https://example.com/image.jpg"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 post like
+**POST** `http://127.0.0.1:8000/api/v1/posts/18/likes?user_id=272`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Ini adalah contoh post.",
+  "image_url": "https://example.com/image.jpg"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 delete likes
+**DELETE** `http://127.0.0.1:8000/api/v1/posts/17/likes?user_id=15`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Ini adalah contoh post.",
+  "image_url": "https://example.com/image.jpg"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+## 📁 messages
+
+### 🔹 send messages
+**POST** `http://127.0.0.1:8000/api/v1/messages/`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "receiver_id": 2,
+  "message_content": "Halo, apa kabar?"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 get messages
+**GET** `http://127.0.0.1:8000/api/v1/messages/42`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "receiver_id": 2,
+  "message_content": "Halo, apa kabar?"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 delete messages
+**DELETE** `http://127.0.0.1:8000/api/v1/messages/42`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "receiver_id": 2,
+  "message_content": "Halo, apa kabar?"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 get message by user
+**GET** `http://127.0.0.1:8000/api/v1/messages/get-messages/2`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "receiver_id": 2,
+  "message_content": "Halo, apa kabar?"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+## 📁 Auth
+
+### 🔹 Register
+**POST** `http://127.0.0.1:8000/api/v1/register`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "fullname": "John Doe",
+  "email": "john@example.com",
+  "password": "secret123"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
+
+### 🔹 Logiin
+**POST** `http://127.0.0.1:8000/api/v1/login`
+
+**Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Contoh Request Body:**
+```json
+{
+  "content": "Ini adalah contoh post.",
+  "image_url": "https://example.com/image.jpg"
+}
+```
+
+**Contoh Response Body:**
+```json
+{
+  "success": true,
+  "message": "Berhasil diproses",
+  "data": {
+    "id": 1,
+    "content": "Ini adalah contoh konten",
+    "created_at": "2025-07-05T12:00:00.000000Z",
+    "updated_at": "2025-07-05T12:05:00.000000Z"
+  }
+}
+```
