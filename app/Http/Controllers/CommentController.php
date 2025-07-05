@@ -4,79 +4,98 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
-use App\Models\Post;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CommentController extends Controller
 {
     public function store(Request $request, $postId)
     {
-        // Validasi request
+        $user = JWTAuth::parseToken()->authenticate();
+
         $request->validate([
             'content' => 'required|string|max:1000',
-            'user_id' => 'required|exists:users,id',
         ]);
 
-        // Buat komentar
         $comment = Comment::create([
             'post_id' => $postId,
-            'user_id' => $request->input('user_id'),
-            'content' => $request->input('content'),
+            'user_id' => $user->id,
+            'content' => $request->content,
         ]);
 
         return response()->json([
             'success' => true,
-            'data' => $comment,
+            'data' => [
+                'id' => $comment->id,
+                'post_id' => $comment->post_id,
+                'content' => $comment->content,
+                'user' => [
+                    'id' => $user->id,
+                    'fullname' => $user->fullname,
+                ],
+                'created_at' => $comment->created_at,
+            ]
         ]);
     }
 
     public function index($postId)
-{
-    $comments = Comment::where('post_id', $postId)
-        ->with('user') 
-        ->latest()
-        ->get();
+    {
+        $comments = Comment::where('post_id', $postId)
+            ->with('user:id,fullname') 
+            ->latest()
+            ->get();
 
-    return response()->json([
-        'success' => true,
-        'data' => $comments,
-    ]);
-}
+        return response()->json([
+            'success' => true,
+            'data' => $comments,
+        ]);
+    }
 
-public function update(Request $request, $id)
-{
-    // Validasi input
-    $request->validate([
-        'content' => 'required|string|max:1000',
-    ]);
+    public function update(Request $request, $id)
+    {
+        $user = JWTAuth::parseToken()->authenticate();
 
-    // Cari komentar
-    $comment = Comment::findOrFail($id);
+        $request->validate([
+            'content' => 'required|string|max:1000',
+        ]);
 
-    // Update komentar
-    $comment->update([
-        'content' => $request->input('content'),
-    ]);
+        $comment = Comment::findOrFail($id);
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Komentar berhasil diupdate.',
-        'data' => $comment,
-    ]);
-}
+        if ($comment->user_id !== $user->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized: You can only edit your own comment.',
+            ], 403);
+        }
 
-public function destroy($id)
-{
-    // Cari komentar
-    $comment = Comment::findOrFail($id);
+        $comment->update([
+            'content' => $request->content,
+        ]);
 
-    // Hapus komentar
-    $comment->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Komentar berhasil diupdate.',
+            'data' => $comment,
+        ]);
+    }
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Komentar berhasil dihapus.',
-    ]);
-}
+    public function destroy($id)
+    {
+        $user = JWTAuth::parseToken()->authenticate();
 
+        $comment = Comment::findOrFail($id);
 
+        if ($comment->user_id !== $user->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized: You can only delete your own comment.',
+            ], 403);
+        }
+
+        $comment->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Komentar berhasil dihapus.',
+        ]);
+    }
 }
