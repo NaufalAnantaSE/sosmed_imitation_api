@@ -7,10 +7,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\JWTAuthController;
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+use App\Http\Middleware\JWTMiddleware;
 
 Route::prefix('v1')->group(function () {
 
@@ -20,7 +17,7 @@ Route::prefix('v1')->group(function () {
 
 
     //posts handler
-    Route::prefix('posts')->group(function () {
+    Route::middleware(JWTMiddleware::class)->prefix('posts')->group(function () {
         Route::get('/', [PostsController::class, 'index']); //menampilkan semua data
         Route::post('/', [PostsController::class, 'store']); //menambahkan data
         Route::get('/{id}', [PostsController::class, 'show']); //menampilkan data berdasarkan id
@@ -29,7 +26,7 @@ Route::prefix('v1')->group(function () {
     });
 
     //comments handler
-    Route::prefix('comments')->group(function () {
+    Route::middleware(JWTMiddleware::class)->prefix('comments')->group(function () {
         Route::get('/posts/{post}', [CommentController::class, 'index']);
         Route::post('/posts/{post}', [CommentController::class, 'store'])->name('comments.store');
         Route::put('/{id}', [CommentController::class, 'update']);
@@ -37,14 +34,14 @@ Route::prefix('v1')->group(function () {
     });
 
     //likes handler
-    Route::prefix('posts/{post}/likes')->group(function () {
+    Route::middleware(JWTMiddleware::class)->prefix('posts/{post}/likes')->group(function () {
         Route::get('/', [LikesController::class, 'count']);         // GET jumlah like
         Route::post('/', [LikesController::class, 'like']);         // POST like
         Route::delete('/', [LikesController::class, 'unlike']);     // DELETE unlike
     });
 
     //messages handler
-    Route::prefix('messages')->group(function () {
+    Route::middleware(JWTMiddleware::class)->prefix('messages')->group(function () {
         Route::post('/', [MessagesController::class, 'store']);
         Route::get('{id}', [MessagesController::class, 'show']);
         Route::delete('{id}', [MessagesController::class, 'destroy']);
