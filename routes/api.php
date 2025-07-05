@@ -16,6 +16,7 @@ Route::prefix('v1')->group(function () {
 
     //auth handler
     Route::post('/register', [JWTAuthController::class, 'register']);
+    Route::post('/login', [JWTAuthController::class, 'login']);
 
 
     //posts handler
