@@ -6,12 +6,18 @@ use App\Http\Controllers\PostsController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\JWTAuthController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 Route::prefix('v1')->group(function () {
+
+    //auth handler
+    Route::post('/register', [JWTAuthController::class, 'register']);
+
+
     //posts handler
     Route::prefix('posts')->group(function () {
         Route::get('/', [PostsController::class, 'index']); //menampilkan semua data
@@ -23,8 +29,8 @@ Route::prefix('v1')->group(function () {
 
     //comments handler
     Route::prefix('comments')->group(function () {
-        Route::get('/posts/{post}', [CommentController::class, 'index']); 
-        Route::post('/posts/{post}', [CommentController::class, 'store'])->name('comments.store'); 
+        Route::get('/posts/{post}', [CommentController::class, 'index']);
+        Route::post('/posts/{post}', [CommentController::class, 'store'])->name('comments.store');
         Route::put('/{id}', [CommentController::class, 'update']);
         Route::delete('/{id}', [CommentController::class, 'destroy']);
     });
@@ -43,7 +49,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('{id}', [MessagesController::class, 'destroy']);
         Route::get('get-messages/{user_id}', [MessagesController::class, 'getMessages']);
     });
-    
+
 });
 
 // Base Locale URL: http://127.0.0.1:8000/api/v1
