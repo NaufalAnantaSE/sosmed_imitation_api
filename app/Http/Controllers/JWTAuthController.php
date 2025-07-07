@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth; // Pastikan facade Auth di-import
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-class AuthController extends Controller
+class JWTAuthController extends Controller
 {
     public function register(Request $request)
     {
