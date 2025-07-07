@@ -2,28 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth; // Pastikan facade Auth di-import
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-
-class JWTAuthController extends Controller
+class AuthController extends Controller
 {
-    //handle regis
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        // Validasi request bisa ditambahkan di sini
+        $request->validate([
             'fullname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
         ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
-        }
 
         $user = User::create([
             'fullname' => $request->fullname,
@@ -31,6 +26,7 @@ class JWTAuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Membuat token dari user yang baru saja dibuat
         $token = JWTAuth::fromUser($user);
 
         return response()->json(compact('user', 'token'), 201);
@@ -38,14 +34,31 @@ class JWTAuthController extends Controller
 
     public function login(Request $request)
     {
+        // Validasi request
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        
         $credentials = $request->only('email', 'password');
 
-        $token = JWTAuth::attempt($credentials);
-
-        if (!$token) {
-            return response()->json(['error' => 'Invalid credentials'], 401);
+        try {
+            // Mencoba otentikasi dan mendapatkan token
+            // Jika gagal, akan melempar exception atau mengembalikan false
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'Invalid credentials'], 401);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Could not create token'], 500);
         }
 
-        return response()->json(compact('token'));
+        // --- PERBAIKAN ADA DI SINI ---
+        // Jika otentikasi berhasil (token didapatkan),
+        // kita ambil data user yang sedang login menggunakan Auth::user()
+        $user = Auth::user();
+
+        // Kembalikan data user dan token dalam format JSON
+        return response()->json(compact('user', 'token'));
     }
 }
+
