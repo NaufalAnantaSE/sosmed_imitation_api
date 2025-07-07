@@ -46,8 +46,7 @@ Route::prefix('v1')->group(function () {
         Route::get('{id}', [MessagesController::class, 'show']);
         Route::delete('{id}', [MessagesController::class, 'destroy']);
         Route::get('get-messages/{user_id}', [MessagesController::class, 'getMessages']);
-    });
-
+    });	
 });
 
 // Base Locale URL: http://127.0.0.1:8000/api/v1
