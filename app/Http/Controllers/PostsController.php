@@ -13,9 +13,18 @@ class PostsController extends Controller
 {
     public function index()
     {
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized: ' . $e->getMessage(),
+            ], 401);
+        }
+
         $posts = Post::with(['user', 'comments.user', 'likes'])->get();
     
-        $posts = $posts->map(function ($post) {
+        $posts = $posts->map(function ($post) use ($user) {
             return [
                 'id' => $post->id,
                 'content' => $post->content,
@@ -38,6 +47,7 @@ class PostsController extends Controller
                     ];
                 }),
                 'likes_count' => $post->likes->count(),
+                'is_liked' => $post->likes->where('user_id', $user->id)->count() > 0,
             ];
         });
     
